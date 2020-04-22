@@ -6,5 +6,9 @@
   tasks:
     - name: Ensure required packages are installed
       apt:
-        name: resolvconf
+        name: "{{ item }}"
         state: present
+      with_items:
+        - resolvconf
+        - python
+
