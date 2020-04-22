@@ -1,0 +1,4 @@
+- include: dotfiles.yml
+- include: packages.yml
+- include: configs.yml
+- include: update.yml

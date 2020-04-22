@@ -1,0 +1,10 @@
+---
+
+- hosts: all
+  become: true
+
+  tasks:
+    - name: Ensure required packages are installed
+      apt:
+        name: resolvconf
+        state: present

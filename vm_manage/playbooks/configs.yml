@@ -1,0 +1,11 @@
+---
+
+- hosts: all
+  become: true
+
+  tasks:
+    - name: Ensure resolvconf config is in place
+      lineinfile:
+        path: /etc/resolvconf/resolv.conf.d/head
+        state: present
+        line: nameserver 10.0.1.1

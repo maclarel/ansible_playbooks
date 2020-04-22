@@ -1,0 +1,26 @@
+---
+
+- hosts: vms
+
+  tasks:
+    - name: Get latest files from GitHub
+      git:
+        repo: 'https://github.com/maclarel/nix.git'
+        dest: /home/gillette/nix
+      when: ansible_facts['hostname'] == "ansible"
+
+    - name: Configure bash_profile
+      copy:
+        src: /home/gillette/nix/bash_profile_linux
+        dest: /home/gillette/.bash_profile
+        owner: gillette
+        group: gillette
+        mode: '0644'
+
+    - name: Configure vimrc
+      copy:
+        src: /home/gillette/nix/vimrc
+        dest: /home/gillette/.vimrc
+        owner: gillette
+        group: gillette
+        mode: '0644'
