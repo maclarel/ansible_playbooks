@@ -1,4 +1,4 @@
-- include: dotfiles.yml
-- include: packages.yml
-- include: configs.yml
-- include: update.yml
+- import_playbook: dotfiles.yml
+- import_playbook: packages.yml
+- import_playbook: configs.yml
+- import_playbook: update.yml
