@@ -7,7 +7,7 @@
       git:
         repo: 'https://github.com/maclarel/nix.git'
         dest: /home/gillette/nix
-      when: ansible_facts['hostname'] == "ansible"
+      when: ansible_facts['hostname'] == "automation"
 
     - name: Configure bash_profile
       copy:
