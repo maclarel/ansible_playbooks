@@ -1,0 +1,8 @@
+---
+- hosts: lab 
+  tasks:
+    - name: Enforce permissions on home dir
+      file:
+        path: "{{ ansible_env.HOME }}"
+        state: directory
+        mode: 0700

@@ -1,9 +1,20 @@
 ---
-
-- hosts: all
+- hosts: lab 
   become: true
 
+  vars_files:
+    - ~/.ansible/vault.yml
+
+  vars:
+    ansible_become_pass: "{{ sudo_password }}" 
+
   tasks:
-    - name: Update all packages
+    - name: Update cache 
       apt:
-        upgrade: dist 
+       update_cache: yes
+       cache_valid_time: 86400
+         
+    - name: Upgrade all packages on servers
+      apt: 
+        name: "*"
+        state: latest

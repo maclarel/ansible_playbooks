@@ -1,17 +1,17 @@
 ---
 
-- hosts: vms
+- hosts: lab
 
   tasks:
     - name: Get latest files from GitHub
       git:
-        repo: 'https://github.com/maclarel/nix.git'
-        dest: /home/gillette/nix
-      when: ansible_facts['hostname'] == "automation"
+        repo: 'https://github.com/maclarel/dotfiles.git'
+        dest: /home/gillette/dotfiles
+      when: ansible_facts['hostname'] == "condcutor"
 
     - name: Configure bash_profile
       copy:
-        src: /home/gillette/nix/bash_profile_linux
+        src: /home/gillette/dotfiles/.bash_profile
         dest: /home/gillette/.bash_profile
         owner: gillette
         group: gillette
@@ -19,8 +19,16 @@
 
     - name: Configure vimrc
       copy:
-        src: /home/gillette/nix/vimrc
+        src: /home/gillette/dotfiles/.vimrc
         dest: /home/gillette/.vimrc
+        owner: gillette
+        group: gillette
+        mode: '0644'
+
+    - name: Configure tmux
+      copy:
+        src: /home/gillette/dotfiles/.tmux.conf
+        dest: /home/gillette/.tmux.conf
         owner: gillette
         group: gillette
         mode: '0644'
