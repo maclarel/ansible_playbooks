@@ -7,6 +7,7 @@
 
   vars:
     ansible_become_pass: "{{ sudo_password }}" 
+    
 
   tasks:
     - name: Update cache 
@@ -20,16 +21,17 @@
         state: latest
         
     - name: Check if a reboot is required.
-      hosts: lab
       ansible.builtin.stat:
         path: /var/run/reboot-required
         get_checksum: no
       register: reboot_required_file
+      when: inventory_hostname in groups["lab"]
 
     - name: Reboot the server (if required).
-      hosts: lab
       ansible.builtin.reboot:
-      when: reboot_required_file.stat.exists == true
+      when: 
+        - reboot_required_file.stat.exists == true
+        - inventory_hostname in groups["lab"]
 
     - name: Remove dependencies that are no longer required.
       ansible.builtin.apt:
