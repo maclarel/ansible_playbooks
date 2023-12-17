@@ -1,37 +1,24 @@
 ---
-- hosts: all 
+- hosts: all
   become: true
 
   vars_files:
     - ~/.ansible/vault.yml
 
   vars:
-    ansible_become_pass: "{{ sudo_password }}" 
-    
+    ansible_become_pass: "{{ sudo_password }}"
+
 
   tasks:
-    - name: Update cache 
+    - name: Update cache
       apt:
        update_cache: yes
        cache_valid_time: 86400
-         
+
     - name: Upgrade all packages on servers
-      apt: 
+      apt:
         name: "*"
         state: latest
-        
-    - name: Check if a reboot is required.
-      ansible.builtin.stat:
-        path: /var/run/reboot-required
-        get_checksum: no
-      register: reboot_required_file
-      when: inventory_hostname in groups["lab"]
-
-    - name: Reboot the server (if required).
-      ansible.builtin.reboot:
-      when: 
-        - inventory_hostname in groups["lab"]
-        - reboot_required_file.stat.exists == true
 
     - name: Remove dependencies that are no longer required.
       ansible.builtin.apt:

@@ -1,14 +1,17 @@
 # Ansible playbooks for home lab management
 
-- manage.yml
+- `manage.yml`
   - Runs all playbooks *other* than performing package updates
-- manage_and_update.yml
+- `manage_and_update.yml`
   - Runs all playbooks, including package updates
-- configs.yml
+- `configs.yml`
   - Ensures some basic config accuracy, such as DNS configs. 
-- dotfiles.yml
+- `dotfiles.yml`
   - Pulls my [dotfiles](https://github.com/maclarel/dotfiles) and pushes them out to all managed systems for quality of life.
-- packages.yml
+  - Not currently used
+- `packages.yml`
   - Ensures specific packages are installed on all managed systems
-- update.yml
+- `update.yml`
   - Runs updates for all packages on managed systems
+- `reboot_if_needed.yml`
+  - Performs a rolling reboot of servers requiring it after package upgrades
