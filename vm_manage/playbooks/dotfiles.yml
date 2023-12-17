@@ -1,6 +1,6 @@
 ---
 
-- hosts: lab
+- hosts: all
 
   tasks:
     - name: Get latest files from GitHub
