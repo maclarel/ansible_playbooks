@@ -1,2 +1,3 @@
 - import_playbook: permissions.yml
+- import_playbook: configs.yml
 - import_playbook: update.yml
