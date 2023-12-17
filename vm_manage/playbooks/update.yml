@@ -30,8 +30,8 @@
     - name: Reboot the server (if required).
       ansible.builtin.reboot:
       when: 
-        - reboot_required_file.stat.exists == true
         - inventory_hostname in groups["lab"]
+        - reboot_required_file.stat.exists == true
 
     - name: Remove dependencies that are no longer required.
       ansible.builtin.apt:
