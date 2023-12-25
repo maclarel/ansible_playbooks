@@ -1,5 +1,11 @@
 # Ansible playbooks for home lab management
 
+Run everything useful through a cronjob (or other automation) with:
+
+```
+ansible-playbook -i ~/.ansible/inventory ~/.ansible/ansible_playbooks/vm_manage/playbooks/manage_and_update.yml --vault-password-file ~/.ansible/.vault_pass
+```
+
 - `manage.yml`
   - Runs all playbooks *other* than performing package updates
 - `manage_and_update.yml`
