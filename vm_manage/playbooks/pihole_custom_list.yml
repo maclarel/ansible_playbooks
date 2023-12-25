@@ -1,0 +1,11 @@
+---
+
+- hosts: docker
+
+  tasks:
+    - name: Maintain Pihole custom DNS entries 
+      ansible.builtin.file:
+        src: /home/gillette/repos/homelab/pihole/custom.list
+        dest: /opt/docker/pihole/etc-pihole/custom.list
+        state: hard
+        force: true

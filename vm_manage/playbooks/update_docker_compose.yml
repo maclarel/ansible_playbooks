@@ -1,0 +1,7 @@
+---
+- hosts: docker
+  become: false
+
+  tasks:
+    - name: Pull latest image and restart docker containers
+      ansible.builtin.shell: /home/gillette/.scripts/update_docker_compose.sh
