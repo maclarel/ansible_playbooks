@@ -1,0 +1,7 @@
+---
+- hosts: letsencrypt
+  become: false
+
+  tasks:
+    - name: Check if Lets Encrypt cert needs renewal, and renew if so
+      ansible.builtin.shell: /home/gillette/.scripts/lets_encrypt.sh
