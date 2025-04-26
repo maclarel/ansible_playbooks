@@ -16,5 +16,7 @@
         state: present
         block: |
           nameserver 10.0.1.2
-          search gillette.net
+          nameserver 10.0.1.5
           search maclaren.dev
+          search gillette.net
+      when: inventory_hostname not in groups['azure']
