@@ -1,0 +1,92 @@
+---
+- name: Set up a test instance of Mythic on a fresh Ubuntu system
+  hosts: mythic
+  become: yes
+  tasks:
+
+    - name: Remove unneeded container packages
+      apt:
+        name:
+          - docker.io
+          - docker-compose
+          - docker-compose-v2
+          - docker-doc
+          - podman-docker
+          - containerd
+          - runc
+        state: absent
+        purge: yes
+        autoremove: yes
+      ignore_errors: yes
+
+    - name: Ensure required base packages are installed
+      apt:
+        name:
+          - ca-certificates
+          - curl
+          - make
+        state: present
+        update_cache: yes
+
+    - name: Create /etc/apt/keyrings directory
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+    - name: Download Docker's official GPG key
+      get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /etc/apt/keyrings/docker.asc
+        mode: '0644'
+        force: yes
+
+    - name: Get Ubuntu codename
+      command: source /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}"
+      register: codename_result
+
+    - name: Add Docker APT repository
+      copy:
+        dest: /etc/apt/sources.list.d/docker.sources
+        content: |
+          Types: deb
+          URIs: https://download.docker.com/linux/ubuntu
+          Suites: {{ codename_result.stdout }}
+          Components: stable
+          Signed-By: /etc/apt/keyrings/docker.asc
+        mode: '0644'
+
+    - name: Update apt cache after adding Docker repo
+      apt:
+        update_cache: yes
+
+    - name: Clone Mythic repository
+      git:
+        repo: https://github.com/its-a-feature/Mythic
+        dest: /opt/Mythic
+        depth: 1
+        single_branch: yes
+
+    - name: Build Mythic with make
+      make:
+        chdir: /opt/Mythic
+
+    - name: Install Mythic Agent - poseidon
+      command: /opt/Mythic/mythic-cli install github https://github.com/MythicAgents/poseidon
+      args:
+        chdir: /opt/Mythic
+
+    - name: Install Mythic Agent - thanatos
+      command: /opt/Mythic/mythic-cli install github https://github.com/MythicAgents/thanatos
+      args:
+        chdir: /opt/Mythic
+
+    - name: Install Mythic Agent - apfell
+      command: /opt/Mythic/mythic-cli install github https://github.com/MythicAgents/apfell
+      args:
+        chdir: /opt/Mythic
+
+    - name: Install Mythic Agent - medusa
+      command: /opt/Mythic/mythic-cli install github https://github.com/MythicAgents/medusa
+      args:
+        chdir: /opt/Mythic
