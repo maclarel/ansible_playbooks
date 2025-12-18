@@ -1,0 +1,38 @@
+---
+- name: Enforce unattended-upgrades kernel retention policy
+  hosts: lab_linux
+  become: true
+  gather_facts: false
+
+  vars_files:
+    - ~/.ansible/vault.yml
+
+  vars:
+    ansible_become_pass: "{{ sudo_password }}"
+
+  tasks:
+    - name: Ensure unattended-upgrades is installed
+      apt:
+        name: unattended-upgrades
+        state: present
+        update_cache: true
+
+    - name: Enforce unattended-upgrades cleanup policy
+      copy:
+        dest: /etc/apt/apt.conf.d/50unattended-upgrades
+        owner: root
+        group: root
+        mode: '0644'
+        content: |
+          // Managed by Ansible
+          Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";
+          Unattended-Upgrade::Remove-New-Unused-Dependencies "true";
+          Unattended-Upgrade::Remove-Unused-Dependencies "true";
+          Unattended-Upgrade::MinimalSteps "true";
+
+    - name: Ensure unattended-upgrades service is enabled and running
+      systemd:
+        name: unattended-upgrades
+        enabled: true
+        state: started
+

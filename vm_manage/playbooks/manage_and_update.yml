@@ -2,6 +2,7 @@
 - import_playbook: configs.yml
 - import_playbook: letsencrypt.yml
 - import_playbook: pihole_custom_list.yml
+- import_playbook: kernel_upgrade_retention.yml
 - import_playbook: update_docker_compose.yml
 - import_playbook: update.yml
 - import_playbook: reboot_if_needed.yml
