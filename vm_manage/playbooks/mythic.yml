@@ -60,13 +60,13 @@
     - name: Install Docker
       apt:
         name:
-          - docker-ce 
-          - docker-ce-cli 
-          - containerd.io 
-          - docker-buildx-plugin 
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
           - docker-compose-plugin
         state: present
-      ignore_errors: no  
+      ignore_errors: no
 
     - name: Clone Mythic repository
       git:
@@ -78,6 +78,19 @@
     - name: Build Mythic with make
       make:
         chdir: /opt/Mythic
+
+    - name: Check for existing TLS cert as it may fail to be created by default
+      ansible.builtin.stat:
+        path: "{{ item }}"
+      register: tls_stats
+      loop:
+        - /opt/Mythic/nginx-docker/ssl/mythic-ssl.key
+        - /opt/Mythic/nginx-docker/ssl/mythic-cert.crt
+
+    - name: Generate certificate if any file is missing
+      ansible.builtin.command:
+        cmd: openssl req -x509 -newkey rsa:4096 -keyout ./ssl/mythic-ssl.key -out ./ssl/mythic-cert.crt -sha256 -days 3650 -nodes -subj "/O=Mythic/OU=Mythic/CN=Mythic"
+      when: tls_stats.results | selectattr('stat.exists', 'equalto', false) | list | length > 0
 
     - name: Install Mythic Agent - poseidon
       command: /opt/Mythic/mythic-cli install github https://github.com/MythicAgents/poseidon
