@@ -57,6 +57,17 @@
       apt:
         update_cache: yes
 
+    - name: Install Docker
+      apt:
+        name:
+          - docker-ce 
+          - docker-ce-cli 
+          - containerd.io 
+          - docker-buildx-plugin 
+          - docker-compose-plugin
+        state: present
+      ignore_errors: no  
+
     - name: Clone Mythic repository
       git:
         repo: https://github.com/its-a-feature/Mythic
