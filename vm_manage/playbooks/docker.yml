@@ -1,5 +1,6 @@
 ---
 - name: Configure Docker on a fresh Ubuntu machine
+  hosts: docker
   become: yes
   gather_facts: yes
   tasks:
