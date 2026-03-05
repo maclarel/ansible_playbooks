@@ -111,3 +111,18 @@
       command: /opt/Mythic/mythic-cli install github https://github.com/MythicAgents/medusa
       args:
         chdir: /opt/Mythic
+
+    - name: Install Mythic Profile - http
+      command: /opt/Mythic/mythic-cli install github https://github.com/MythicC2Profiles/http
+      args:
+        chdir: /opt/Mythic
+
+    - name: Install Mythic Profile - httpx
+      command: /opt/Mythic/mythic-cli install github https://github.com/MythicC2Profiles/httpx
+      args:
+        chdir: /opt/Mythic
+
+    - name: Restart Mythic to pick up all changes
+      command: /opt/Mythic/mythic-cli restart
+      args:
+        chdir: /opt/Mythic
